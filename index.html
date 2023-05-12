@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume Matcher</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Resume Matcher</h1>
+    <form id="upload-form" action="{{ url_for('convert') }}" method="POST" enctype="multipart/form-data">
+        <label for="resume">Upload Resume:</label>
+<input type="file" name="resume-files" id="resume" multiple required>
+        <br>
+        <label for="job_description">Upload Job Description:</label>
+        <input type="file" name="job-description-file" id="job-description-file" required>
+        <br>
+        <label for="experience-unit">Display Relevant Experience In:</label>
+        <select name="experience-unit" id="experience-unit">
+            <option value="months">Months</option>
+            <option value="years">Years</option>
+        </select>
+        <br>
+        <label for="name">Candidate Name:</label>
+        <input type="text" name="candidate-name" placeholder="Candidate Name">
+        <select name="work-mode">
+            <option value="Onsite">Onsite</option>
+            <option value="Remote">Remote</option>
+            <option value="Hybrid">Hybrid</option>
+        </select>
+        <select name="planned-pto">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select><br><br>
+        <button type="submit">Convert</button>
+    </form>
+
+    <script>
+function submitForm(event) {
+    event.preventDefault();
+
+    var formData = new FormData($("#upload-form")[0]);
+
+    $.ajax({
+        url: '/convert',
+        method: 'POST',
+        data: formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success: function(response) {
+            sessionStorage.setItem("summary", JSON.stringify(response.summary));
+            sessionStorage.setItem("formattedResumes", JSON.stringify(response.formatted_resumes));
+            sessionStorage.setItem("relevant_experiences", JSON.stringify(response.relevant_experiences));
+            sessionStorage.setItem("similarity_scores", JSON.stringify(response.similarity_scores));
+            window.location.href = '/result';
+        }
+    });
+}
+
+$(document).ready(function () {
+    $("#upload-form").submit(submitForm);
+});
+
+        }
+
+        $(document).ready(function () {
+            $("#upload-form").submit(submitForm);
+        });
+    </script>
+</body>
+</html>

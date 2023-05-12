@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Converted Resume</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Converted Resume</h1>
+    <h2>Summary</h2>
+    <div id="summary"></div>
+    <h2>Total Relevant Experience</h2>
+    <div id="relevant-experience"></div>
+    <h2>Similarity Score</h2>
+    <div id="similarity-score"></div>
+    <h2>Resume</h2>
+    <pre id="resume-text"></pre>
+
+    <script>
+        function displaySummaryAndResume() {
+            var summary = sessionStorage.getItem("summary");
+            var formattedResume = sessionStorage.getItem("formattedResume");
+            var relevantExperience = sessionStorage.getItem("relevant_experience");
+            var similarityScore = sessionStorage.getItem("similarity_score");
+
+            if (summary && formattedResume) {
+                $("#summary").html(summary);
+                $("#relevant-experience").html(relevantExperience);
+                $("#similarity-score").html(similarityScore);
+                $("#resume-text").html(formattedResume);
+            } else {
+                alert("No resume found. Please go back and convert a resume.");
+            }
+        }
+
+        $(document).ready(function() {
+            displaySummaryAndResume();
+        });
+    </script>
+</body>
+
+</html>
